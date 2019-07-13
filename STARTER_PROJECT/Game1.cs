@@ -83,7 +83,7 @@ namespace STARTER_PROJECT
             {
                 for (int x = 0; x < boardXDim; x++)
                 {
-                    board[y, x] = new Character(Content.Load<Texture2D>("blankSquare"),
+                    board[y, x] = new Character(Content.Load<Texture2D>("buttonOutline"),
                         new Rectangle(x * (screenWidth / boardXDim), y * (screenHeight / boardYDim), (screenWidth / boardXDim), (screenHeight / boardYDim)));
                 }
             }
@@ -223,7 +223,13 @@ namespace STARTER_PROJECT
 
         public void drawGameplay()
         {
-
+            for (int y = 0; y < boardYDim; y++)
+            {
+                for (int x = 0; x < boardXDim; x++)
+                {
+                    board[y, x].drawCharacter(spriteBatch);
+                }
+            }
 
         }
 
