@@ -21,8 +21,6 @@ namespace STARTER_PROJECT
         SpriteFont testFont;
         Random rand = new Random();
 
-
-
         //Character player, playerCopyTopAndBottom, playerCopyLeftAndRight;
         Character[,] board;
         //Character[,] solutionBoard;
@@ -45,13 +43,6 @@ namespace STARTER_PROJECT
         bool returned = false;
         int numIterationsToSolve = 0;
 
-
-
-        int knightStartingX = 0;
-        int knightStartingY = 0;
-        int knightX = 0;
-        int knightY = 0;
-
         int gameClock = 0;
 
         bool hasDoneOneTimeCode = false;
@@ -60,6 +51,12 @@ namespace STARTER_PROJECT
         bool isPressingKey = false;
         bool hasWon = false;
 
+        enum gameState
+        {
+            titleScreen, gameplay, lose,
+        }
+
+        gameState state = gameState.gameplay;
 
         public Game1()
         {
@@ -139,32 +136,18 @@ namespace STARTER_PROJECT
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (hasDoneOneTimeCode == false)
+            switch (state)
             {
-                int x = knightStartingX;
-                int y = knightStartingY;
-                knight.setPos(board[y, x].getRec());
-                knightX = x;
-                knightY = y;
-
-                findValidSpaces(ref validSpaces, knightX, knightY);
-                //computerFindValidSpaces(ref computerValidSpacesGlobal);
-                //while (isSolved == false)
-                //{
-                //    reset();
-                //    makeRandomLevel();
-                //}
-                int a = 0;
-                //solveKnightsTour(ref validSpaces, ref a, board,  ref knightX,  ref knightY);
-
-                hasDoneOneTimeCode = true;
+                case gameState.titleScreen:
+                    titleScreen();
+                    break;
+                case gameState.gameplay:
+                    gameplay();
+                    break;
+                case gameState.lose:
+                    lose();
+                    break;
             }
-
-
-
-            userControls();
-
-            checkWins();
 
             oldmouse = mouse;
             oldkb = kb;
@@ -172,347 +155,105 @@ namespace STARTER_PROJECT
             base.Update(gameTime);
         }
 
+        public void titleScreen()
+        {
+
+        }
+
+        public void startOfGameCode()
+        {
+            if (hasDoneOneTimeCode == false)
+            {
+                hasDoneOneTimeCode = true;
+            }
+        }
+
+        public void lose()
+        {
+
+        }
+
+
+        public void gameplay()
+        {
+            startOfGameCode();
+
+            userControls();
+
+
+        }
+
         public void userControls()
         {
+
+            if (kb.IsKeyDown(Keys.W) || kb.IsKeyDown(Keys.Up))
+            {
+
+            }
+
+            if (kb.IsKeyDown(Keys.S) || kb.IsKeyDown(Keys.Down))
+            {
+
+            }
+            if (kb.IsKeyDown(Keys.A) || kb.IsKeyDown(Keys.Left))
+            {
+
+            }
+            if (kb.IsKeyDown(Keys.D) || kb.IsKeyDown(Keys.Right))
+            {
+
+            }
+
             if (kb.IsKeyDown(Keys.R) && oldkb.IsKeyUp(Keys.R))
             {
-                reset();
+
             }
 
             if (kb.IsKeyDown(Keys.N) && oldkb.IsKeyUp(Keys.N))
             {
-                makeRandomLevel();
+
             }
             if (kb.IsKeyDown(Keys.C) && oldkb.IsKeyUp(Keys.C))
             {
-                isSolved = false;
-                while (isSolved == false)
-                {
-                    reset();
-                    makeRandomLevel();
-                }
-                //makeRandom2(0, validSpaces, knightX, knightY);
 
             }
             if (kb.IsKeyDown(Keys.V) && oldkb.IsKeyUp(Keys.V))
             {
-                isSolved = false;
-                makeRandom2(0, ref validSpaces, knightX, knightY);
+
 
             }
             if (kb.IsKeyDown(Keys.U) && oldkb.IsKeyUp(Keys.U))
             {
-                if (numMovesMade > 0)
-                {
-                    for (int y = 0; y < boardYDim; y++)
-                    {
-                        for (int x = 0; x < boardXDim; x++)
-                        {
-                            if (board[y, x].moveNumber == numMovesMade - 1)
-                            {
-                                board[knightY, knightX].moveNumber = 0;
-                                numMovesMade--;
-                                knight.setPos(board[y, x].getRec());
-                                knightX = x;
-                                knightY = y;
-                                findValidSpaces(ref validSpaces, knightX, knightY);
 
-                                x = boardXDim;
-                                y = boardYDim;
-                            }
-
-                        }
-                    }
-                }
             }
 
-            if (numMovesMade == 0)
-            {
-                if (mouse.RightButton == ButtonState.Pressed)
-                {
-                    for (int y = 0; y < boardYDim; y++)
-                    {
-                        for (int x = 0; x < boardXDim; x++)
-                        {
-                            if (board[y, x].getRec().Contains(mousePos))
-                            {
-                                knight.setPos(board[y, x].getRec());
-                                knightX = x;
-                                knightY = y;
-                                knightStartingX = x;
-                                knightStartingY = y;
-
-
-                                findValidSpaces(ref validSpaces, knightX, knightY);
-
-                                y = boardYDim;
-                                break;
-                            }
-
-                        }
-                    }
-                }
-            }
-
-            if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
-            {
-                for (int i = 0; i < validSpaces.Count; i++)
-                {
-                    var a = validSpaces[i];
-                    if (board[a[0], a[1]].getRec().Contains(mousePos))
-                    {
-                        if (numMovesMade == 0)
-                        {
-                            numMovesMade++;
-                            board[knightY, knightX].moveNumber = numMovesMade;
-                        }
-                        knight.setPos(board[a[0], a[1]].getRec());
-                        knightX = a[1];
-                        knightY = a[0];
-                        numMovesMade++;
-                        board[knightY, knightX].moveNumber = numMovesMade;
-                        findValidSpaces(ref validSpaces, knightX, knightY);
-
-
-                        break;
-                    }
-                }
-            }
         }
 
         public void reset()
         {
-            numMovesMade = 0;
-            knightX = knightStartingX;
-            knightY = knightStartingY;
-            knight.setPos(board[knightY, knightX].getRec());
-
-            for (int y = 0; y < boardYDim; y++)
-            {
-                for (int x = 0; x < boardXDim; x++)
-                {
-                    board[y, x].moveNumber = 0;
-
-                }
-            }
-            findValidSpaces(ref validSpaces, knightX, knightY);
-        }
-
-        public void makeRandomLevel()
-        {
-            //makeRandom2(0, validSpaces, knightX, knightY);
-            if (boardXDim * boardYDim == numMovesMade)
-            {
-                isSolved = true;
-            }
-            if (isSolved)
-                return;
-            if (validSpaces.Count == 0)
-                return;
-            int randPos = rand.Next(0, validSpaces.Count);
-
-
-            var a = validSpaces[randPos];
-            if (numMovesMade == 0)
-            {
-                numMovesMade++;
-                board[knightY, knightX].moveNumber = numMovesMade;
-            }
-            knight.setPos(board[a[0], a[1]].getRec());
-            knightX = a[1];
-            knightY = a[0];
-            numMovesMade++;
-            board[knightY, knightX].moveNumber = numMovesMade;
-            findValidSpaces(ref validSpaces, knightX, knightY);
-
-            makeRandomLevel();
-        }
-
-        public void makeRandom2(int paramMovesMade, ref List<int[]> paramSpaces, int paramKnightX, int paramKnightY)
-        {
-            if (boardXDim * boardYDim == paramMovesMade)
-            {
-                isSolved = true;
-            }
-            if (isSolved)
-            {
-
-
-                return;
-            }
-            if (paramSpaces.Count == 0)
-                return;
-
-            int usableMovesMade = paramMovesMade;
-            int usableKnightX = paramKnightX;
-            int usableKnightY = paramKnightY;
-            List<int[]> usableSpaces = new List<int[]>(0);
-            for (int i = 0; i < paramSpaces.Count; i++)
-            {
-                usableSpaces.Add(paramSpaces[i]);
-            }
-            //int randPos = rand.Next(0, validSpaces.Count);
-            for (int i = 0; i < usableSpaces.Count; i++)
-            {
-                var a = usableSpaces[i];
-                if (usableMovesMade == 0)
-                {
-                    usableMovesMade++;
-                    board[usableKnightY, usableKnightX].moveNumber = usableMovesMade;
-                }
-                if (board[a[0], a[1]].moveNumber == 0)
-                {
-                    knight.setPos(board[a[0], a[1]].getRec());
-                    usableKnightX = a[1];
-                    usableKnightY = a[0];
-
-                    usableMovesMade++;
-                    board[usableKnightY, usableKnightX].moveNumber = usableMovesMade;
-                    findValidSpaces(ref usableSpaces, usableKnightX, usableKnightY);
-
-                    makeRandom2(usableMovesMade, ref usableSpaces, usableKnightX, usableKnightY);
-                }
-                //for (int j = 0; j < usableSpaces.Count; j++)
-                //{
-                //    usableSpaces[j] = null;
-
-                //}
-            }
-
 
         }
-
-        public void solveKnightsTour(ref List<int[]> currentPossibleMoves, ref int paramMovesMade, Character[,] paramBoard,
-             ref int paramKnightX, ref int paramKnightY)
-        {
-            if (currentPossibleMoves.Count == 0 && paramMovesMade == boardXDim * boardYDim - 1)
-            {
-                returned = true;
-                return;
-
-            }
-            int newKnightX = paramKnightX;
-            int newKnightY = paramKnightY;
-
-            numIterationsToSolve = numIterationsToSolve + 1;
-            for (int i = 0; i < currentPossibleMoves.Count; i++)
-            {
-                var a = currentPossibleMoves[i];
-
-
-                if (paramMovesMade == 0)
-                {
-                    paramMovesMade += 1;
-                    board[newKnightY, newKnightX].solutionNumber = paramMovesMade;
-                }
-                paramMovesMade += 1;
-
-                knight.setPos(board[a[0], a[1]].getRec());
-                newKnightX = a[1];
-                newKnightY = a[0];
-                //numMovesMade++;
-                board[newKnightY, newKnightX].moveNumber = paramMovesMade;
-                board[newKnightY, newKnightX].solutionNumber = paramMovesMade;
-                findValidSpaces(ref currentPossibleMoves, paramKnightX, paramKnightY);
-
-
-                //if (solveKnightsTour(ref newPossibleMoves, ref paramMovesMade, ref paramBoard, ref paramKnightX, ref paramKnightY))
-                //    break;
-
-                solveKnightsTour(ref currentPossibleMoves, ref paramMovesMade, paramBoard, ref paramKnightX, ref paramKnightY);
-
-                //makeRandomLevel();
-
-            }
-
-        }
-
-        //public void computerMoveToSpot(int y, int x, ref List<int[]> computerValidSpaces)
-        //{
-        //    knight.setPos(board[y, x].getRec());
-        //    knightX = x;
-        //    knightY = y;
-
-        //    computerFindValidSpaces(ref computerValidSpaces);
-
-        //    for (int i = 0; i < computerValidSpacesGlobal.Count; i++)
-        //    {
-        //        var a = computerValidSpacesGlobal[i];
-        //        computerMoveToSpot(a[0], a[1], ref computerValidSpacesGlobal);
-        //    }
-        //}
-
-        public void findValidSpaces(ref List<int[]> listToAdjust, int paramKnightX, int paramKnightY)
-        {
-            for (int i = 0; i < listToAdjust.Count;)
-            {
-                listToAdjust.RemoveAt(i);
-            }
-
-            addValidSpace(paramKnightX - 2, paramKnightY - 1, ref listToAdjust);
-            addValidSpace(paramKnightX - 2, paramKnightY + 1, ref listToAdjust);
-
-            addValidSpace(paramKnightX + 1, paramKnightY - 2, ref listToAdjust);
-            addValidSpace(paramKnightX - 1, paramKnightY - 2, ref listToAdjust);
-
-            addValidSpace(paramKnightX + 2, paramKnightY + 1, ref listToAdjust);
-            addValidSpace(paramKnightX + 2, paramKnightY - 1, ref listToAdjust);
-
-            addValidSpace(paramKnightX - 1, paramKnightY + 2, ref listToAdjust);
-            addValidSpace(paramKnightX + 1, paramKnightY + 2, ref listToAdjust);
-        }
-        public void addValidSpace(int xPos, int yPos, ref List<int[]> listToAddTo)
-        {
-            int[] tempArray = new int[2];
-
-            if (xPos >= 0 && xPos < boardXDim && yPos >= 0 && yPos < boardYDim && board[yPos, xPos].moveNumber == 0)
-            {
-                tempArray[0] = yPos;
-                tempArray[1] = xPos;
-                listToAddTo.Add(tempArray);
-            }
-        }
-        //public void computerFindValidSpaces(ref List<int[]> computerValidSpaces)
-        //{
-        //    for (int i = 0; i < computerValidSpaces.Count;)
-        //    {
-        //        computerValidSpaces.RemoveAt(i);
-        //    }
-
-        //    computerAddValidSpace(knightX - 2, knightY - 1, ref computerValidSpaces);
-        //    computerAddValidSpace(knightX - 2, knightY + 1, ref computerValidSpaces);
-
-        //    computerAddValidSpace(knightX + 1, knightY - 2, ref computerValidSpaces);
-        //    computerAddValidSpace(knightX - 1, knightY - 2, ref computerValidSpaces);
-
-        //    computerAddValidSpace(knightX + 2, knightY + 1, ref computerValidSpaces);
-        //    computerAddValidSpace(knightX + 2, knightY - 1, ref computerValidSpaces);
-
-        //    computerAddValidSpace(knightX - 1, knightY + 2, ref computerValidSpaces);
-        //    computerAddValidSpace(knightX + 1, knightY + 2, ref computerValidSpaces);
-        //}
 
         public void checkWins()
         {
-            //hasWon = true;
-            //for (int y = 0; y < boardYDim; y++)
-            //{
-            //    for (int x = 0; x < boardXDim; x++)
-            //    {
-            //        if (board[y, x].moveNumber == 0)
-            //        {
-            //            hasWon = false;
-            //            y = boardYDim;
-            //            x = boardXDim;
-            //        }
-            //    }
-            //}
 
-            if (numMovesMade == boardXDim * boardYDim - 1)
-                hasWon = true;
         }
 
+        public void drawTitleScreen()
+        {
 
+        }
+
+        public void drawGameplay()
+        {
+
+
+        }
+
+        public void drawLose()
+        {
+
+        }
 
         //public void computerAddValidSpace(int xPos, int yPos, ref List<int[]> computerValidSpaces)
         //{
@@ -532,87 +273,23 @@ namespace STARTER_PROJECT
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
-
-
-            for (int y = 0; y < boardYDim; y++)
+            switch (state)
             {
-                for (int x = 0; x < boardXDim; x++)
-                {
-                    if ((x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0))
-                        board[y, x].drawCharacter(spriteBatch, Color.Green);
-                    else
-                        board[y, x].drawCharacter(spriteBatch);
-                    for (int i = 0; i < validSpaces.Count; i++)
-                    {
-                        var a = validSpaces[i];
-                        //var b = computerValidSpacesGlobal[i];
-
-
-
-                        //if (b[0] == y && b[1] == x && gameClock % 100 > 50)
-                        //{
-                        //    board[y, x].drawCharacter(spriteBatch, Color.Salmon);
-
-                        //}
-
-                        if (a[0] == y && a[1] == x && gameClock % 100 > 50)
-                        {
-                            board[y, x].drawCharacter(spriteBatch, Color.BlueViolet);
-
-                        }
-                    }
-
-                    if (board[y, x].moveNumber != 0)
-                    {
-                        if (numMovesMade - board[y, x].moveNumber > 0)
-                            tokens[y, x].drawCharacter(spriteBatch, Color.Black);
-
-                        spriteBatch.DrawString(testFont, board[y, x].moveNumber.ToString(),
-                            new Vector2(board[y, x].getRec().Center.X - 5, board[y, x].getRec().Center.Y - 10), Color.Purple);
-
-
-                    }
-
-                    //spriteBatch.DrawString(testFont, board[y, x].solutionNumber.ToString(),
-                    //        new Vector2(board[y, x].getRec().Center.X - 5, board[y, x].getRec().Center.Y - 10), Color.Blue);
-                }
+                case gameState.titleScreen:
+                    drawTitleScreen();
+                    break;
+                case gameState.gameplay:
+                    drawGameplay();
+                    break;
+                case gameState.lose:
+                    drawLose();
+                    break;
             }
-
-
-
-
-
-            knight.drawCharacter(spriteBatch);
-            //if (board[knightY, knightX].moveNumber != 0)
-            //    spriteBatch.DrawString(testFont, board[knightY, knightX].moveNumber.ToString(),
-            //                new Vector2(board[knightY, knightX].getRec().Center.X - 5, board[knightY, knightX].getRec().Center.Y - 10), Color.Red);
-
-            //spriteBatch.DrawString(testFont, "MouseX: " + mousePos.X + "\nMouseY: " + mousePos.Y, new Vector2(200, 200), Color.Pink);
-            //spriteBatch.DrawString(testFont, "didWork: " + didWork, new Vector2(200, 280), Color.Pink);
-            //spriteBatch.DrawString(testFont, "didWork: " + didWork, new Vector2(200, 280), Color.Pink);
-
-            if (numMovesMade == 0)
-            {
-                spriteBatch.DrawString(testFont, "Choose a starting \nsquare with right click", new Vector2(200, 400), Color.Black);
-
-            }
-
-            if (hasWon)
-            {
-                spriteBatch.DrawString(testFont, "You did it!", new Vector2(screenWidth / 2 - 75, screenHeight / 2 - 30), Color.Black);
-
-            }
-
-            //spriteBatch.DrawString(testFont, "Iterations: " + numIterationsToSolve, new Vector2(screenWidth / 2 - 75, screenHeight / 2 - 30), Color.LightCyan);
-            //spriteBatch.DrawString(testFont, "didReturn: " + returned, new Vector2(screenWidth / 2 - 75, screenHeight / 2 + 30), Color.Pink);
 
             spriteBatch.End();
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
         }
     }
