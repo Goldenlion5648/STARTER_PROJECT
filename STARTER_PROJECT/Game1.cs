@@ -24,12 +24,9 @@ namespace STARTER_PROJECT
         //Character player, playerCopyTopAndBottom, playerCopyLeftAndRight;
         Character[,] board;
         //Character[,] solutionBoard;
-        Character[,] tokens;
+        //Character[,] tokens;
         Character knight;
         int playerWidth = 64, playerHeight = 64;
-
-        List<int[]> validSpaces = new List<int[]>(8);
-        List<int[]> computerValidSpacesGlobal = new List<int[]>(8);
 
         int boardXDim = 5, boardYDim = 5;
 
@@ -93,7 +90,6 @@ namespace STARTER_PROJECT
             testFont = Content.Load<SpriteFont>("testFont");
 
             board = new Character[boardYDim, boardXDim];
-            tokens = new Character[boardYDim, boardXDim];
 
             knight = new Character(Content.Load<Texture2D>("chessKnight"),
                         new Rectangle(0, 0, (screenWidth / boardXDim), (screenHeight / boardYDim)));
@@ -104,12 +100,9 @@ namespace STARTER_PROJECT
                 {
                     board[y, x] = new Character(Content.Load<Texture2D>("blankSquare"),
                         new Rectangle(x * (screenWidth / boardXDim), y * (screenHeight / boardYDim), (screenWidth / boardXDim), (screenHeight / boardYDim)));
-                    tokens[y, x] = new Character(Content.Load<Texture2D>("whiteCircle"),
-                        new Rectangle(x * (screenWidth / boardXDim), y * (screenHeight / boardYDim), (screenWidth / boardXDim), (screenHeight / boardYDim)));
                 }
             }
 
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>

@@ -168,13 +168,6 @@ namespace STARTER_PROJECT
                 characterRec.Height -= amountToShrinkEachSide * 2;
             }
 
-            //characterRec.X += amountToShrinkEachSide;
-            //characterRec.Width -= amountToShrinkEachSide * 2;
-
-            //characterRec.Y += amountToShrinkEachSide;
-            //characterRec.Height -= amountToShrinkEachSide * 2;
-
-
         }
 
         public virtual void setRecY(int newValue)
