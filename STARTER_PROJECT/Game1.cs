@@ -29,23 +29,12 @@ namespace STARTER_PROJECT
 
         int boardXDim = 5, boardYDim = 5;
 
-        int numMovesMade = 0;
-
         int screenWidth = 800;
         int screenHeight = 800;
-
-        bool isSolved = false;
-
-        bool returned = false;
-        int numIterationsToSolve = 0;
 
         int gameClock = 0;
 
         bool hasDoneOneTimeCode = false;
-        bool didWork = false;
-
-        bool isPressingKey = false;
-        bool hasWon = false;
 
         enum gameState
         {
@@ -261,7 +250,7 @@ namespace STARTER_PROJECT
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
             switch (state)
