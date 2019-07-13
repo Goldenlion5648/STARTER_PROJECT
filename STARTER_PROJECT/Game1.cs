@@ -25,7 +25,6 @@ namespace STARTER_PROJECT
         Character[,] board;
         //Character[,] solutionBoard;
         //Character[,] tokens;
-        Character knight;
         int playerWidth = 64, playerHeight = 64;
 
         int boardXDim = 5, boardYDim = 5;
@@ -90,9 +89,6 @@ namespace STARTER_PROJECT
             testFont = Content.Load<SpriteFont>("testFont");
 
             board = new Character[boardYDim, boardXDim];
-
-            knight = new Character(Content.Load<Texture2D>("chessKnight"),
-                        new Rectangle(0, 0, (screenWidth / boardXDim), (screenHeight / boardYDim)));
 
             for (int y = 0; y < boardYDim; y++)
             {
@@ -165,7 +161,6 @@ namespace STARTER_PROJECT
         {
 
         }
-
 
         public void gameplay()
         {
