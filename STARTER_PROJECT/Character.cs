@@ -20,6 +20,7 @@ namespace STARTER_PROJECT
 
         public int moveNumber { get; set; }
         public int solutionNumber { get; set; }
+        public bool isHighlighted { get; set; }
 
         public int totalFrames { get; set; }
         public int currentFrame { get; set; }

@@ -163,6 +163,21 @@ namespace STARTER_PROJECT
         public void userControls()
         {
 
+            for (int y = 0; y < boardYDim; y++)
+            {
+                for (int x = 0; x < boardXDim; x++)
+                {
+                    if (board[y, x].getRec().Contains(mousePos))
+                    {
+                        if (mouse.LeftButton == ButtonState.Pressed && oldmouse.LeftButton == ButtonState.Released)
+                        {
+                            board[y, x].isHighlighted = !board[y, x].isHighlighted;
+                        }
+
+                    }
+                }
+            }
+
             if (kb.IsKeyDown(Keys.W) || kb.IsKeyDown(Keys.Up))
             {
 
