@@ -36,6 +36,8 @@ namespace STARTER_PROJECT
 
         bool hasDoneOneTimeCode = false;
 
+        Color selectedColor = Color.Blue;
+
         enum gameState
         {
             titleScreen, gameplay, lose,
@@ -242,7 +244,16 @@ namespace STARTER_PROJECT
             {
                 for (int x = 0; x < boardXDim; x++)
                 {
-                    board[y, x].drawCharacter(spriteBatch);
+                    if(board[y,x].isHighlighted)
+                    {
+                        board[y, x].drawCharacter(spriteBatch, selectedColor);
+
+                    }
+                    else
+                    {
+                        board[y, x].drawCharacter(spriteBatch);
+
+                    }
                 }
             }
 
